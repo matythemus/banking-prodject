@@ -1,0 +1,160 @@
+// Matthew Williams 02/5/23
+//This program tries to calculate you return based on the initial deposit, if you want to add a monthly deposit and the rate, and the time that you have to let it compound
+    
+#include <iostream>// include needed library things
+#include <string>
+#include <iomanip>
+#include <stdio.h>
+#include <math.h>
+using namespace std;
+class Person { // create a class to make it more object orianented
+private: 
+
+  public: // make all variables public so that they are more accesable to the program
+  double in=0;
+  double mDep=0;
+  double r=0;
+  double t=0;
+  int year = 1;
+  int monthTime;
+  double mBalance = 0;
+  double total;
+
+  //make a print details function to print each years balances
+  void printDetails(int year, double yearEndBalance, double interestEarned) {
+    cout << "   " << year << "   \t" << "\t"<<"$ " << fixed << setprecision(2) << yearEndBalance << "\t" << "\t" << "\t"<<"$ " << fixed << setprecision(2) << interestEarned << endl;
+}
+  // get the input to start the program
+  string GetInput(string input) {
+      double in = -1.0;
+      double r = -1.0;
+      double t = -1.0;
+      double mDep = -1.0;//set variables to - so that the input is validated for positive numbers
+      while (in < 0) { // initial deposit 
+          cout << "Invesment Initial value: " << endl;
+          cin >> in;
+          if (in < 0) {
+              cout << "all inputs have to be 0 or greater" << endl;
+
+          }
+      }
+      
+      while (mDep < 0) { // if there is a value that they want to add monthly
+          cout << "Invesment Monthly added value: " << endl;
+          cin >> mDep;
+          if (mDep < 0) {
+              cout << "all inputs have to be 0 or greater" << endl;
+
+          }
+      }
+      while (r < 0) { //the rate that their money will be compounded at
+          cout << "Rate: " << endl;
+          cin >> r;
+          if (r < 0) {
+              cout << "all inputs have to be 0 or greater" << endl;
+
+          }
+      }
+      while (t < 0) { // the time that they can leave it in the savings account
+          cout << "time to compound in years: " << endl;
+          cin >> t;
+          if (t < 0) {
+              cout << "all inputs have to be 0 or greater" << endl;
+
+          }
+      }
+      
+
+      calculateBalanceWithoutMonthlyDeposit(in, r, t);//calls both calculations with the specific parameters
+      calculateBalanceWithMonthlyDeposit(in, r, t, mDep);
+      return input;
+  }
+  double calculateBalanceWithoutMonthlyDeposit(double initialInvestment, double interestRate, int numberOfYears) {
+      int year = 1;
+      int monthTime;
+      double mBalance = 0;
+      double total;
+       
+      double amount = initialInvestment;
+      double input = 50;
+      double store;
+      cout << endl;//print header
+      cout << "Balance and Interest without added monthly deposits" << endl;
+      cout << "  Year  " << "\t" << "Year end balance" << "\t" << "Year end interest earned" << endl;
+      while (year <= numberOfYears) {
+         
+          double yearInt = 0;
+          for (int i = 0; i < 12; i++) { //loop 12 times for the months of the year 
+            
+              store = mBalance;
+              mBalance = (amount) * ((interestRate / 100) / 12);//calculate the amount with the interest rate
+              yearInt = yearInt + mBalance; //add the new calculated interest to the years total
+              amount = amount + mBalance;// add the new monthly balance to the toal balance
+
+              
+          }
+           
+          printDetails(year, amount, yearInt);//call print details with parameters after each year
+          year = year + 1;//increment the year
+      }
+
+      return amount;
+  }
+
+  double calculateBalanceWithMonthlyDeposit(double initialInvestment, double interestRate, int numberOfYears, double mDep) {
+      int year = 1;
+      int monthTime;
+      double mBalance = 0;
+      double total;
+      double amount = initialInvestment;
+      
+      double store;
+      cout << endl;
+      cout << endl;
+      cout << endl;
+      cout << endl;//print header for the one with monthly deposits
+      cout << "Balance and Interest with added monthly deposits" << endl;
+      cout << "  Year  " << "\t" << "Year end balance" << "\t" << "Year end interest earned" << endl;
+      while (year <= numberOfYears) {
+          double yearInt = 0;
+          for (int i = 0; i < 12; i++) {//loop 12 times for the months of the year 
+              
+              mBalance = (amount + mDep) * ((interestRate / 100) / 12);//calculate with monthly deposit
+            
+              yearInt = yearInt + mBalance; //add the interest to the years interest
+              amount = amount + mBalance + mDep; //add the current amount and interest and the deposit to the new total amount
+              mBalance = mBalance + mDep; 
+            
+          }
+          
+          printDetails(year, amount, yearInt);
+          year = year + 1;
+      }
+      return initialInvestment;
+  }
+
+  };
+
+
+
+  int main() {
+
+      string input;
+      Person GetInput;// set the  class getter
+      GetInput.GetInput(input); //call the input function in person class  
+      return 0;
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
